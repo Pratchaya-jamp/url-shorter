@@ -55,6 +55,18 @@ const server = http.createServer(async (req, res) => {
         }
       });
 
+    } else if (req.method === 'GET' && req.url === '/api/history') {
+      const querySnapshot = await urlsCollection.orderBy('createdAt', 'desc').limit(10).get()
+      const history = []
+      querySnapshot.forEach(doc => {
+        history.push({
+          shortCode: doc.id,
+          shortUrl: `${BASE_URL}/${doc.id}`, 
+          longUrl: doc.data().longUrl,
+        })
+      })
+      return sendJson(res, 200, history)
+
     }
   } catch (error) {
     if (!res.headersSent) {
