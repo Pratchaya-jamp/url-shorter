@@ -33,7 +33,7 @@ const GlobalStyles = () => (
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: #333;
-        background-color: #f0f4f8; 
+        background-color: #f0f8f0;
       }
     `}
   />
@@ -43,13 +43,13 @@ const AppLayout = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0f4f8 0%, #e0e7ee 100%);
+  background: linear-gradient(135deg, #f0f8f0 0%, #dcf3dc 100%);
 `
 
 const Header = styled.header`
   width: 100%;
   padding: 20px 40px;
-  background: #ffffff;
+  background: #fafffa;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
   display: flex;
@@ -61,7 +61,7 @@ const Header = styled.header`
 const Logo = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
-  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: flex;
@@ -73,11 +73,11 @@ const Footer = styled.footer`
   width: 100%;
   padding: 25px 40px;
   text-align: center;
-  background: #ffffff;
+  background: #fafffa;
   color: #9da8b7;
   font-size: 0.9rem;
   box-sizing: border-box;
-  border-top: 1px solid #e0e7ee;
+  border-top: 1px solid #dcf3dc;
   margin-top: auto;
 `
 
@@ -114,7 +114,7 @@ const NotificationWrapper = styled.div`
 `
 
 const ShortenerWrapper = styled.div`
-  background: #ffffff;
+  background: #fafffa;
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
@@ -122,7 +122,7 @@ const ShortenerWrapper = styled.div`
   max-width: 600px;
   animation: ${fadeIn} 0.7s ease-out;
   box-sizing: border-box;
-  border: 1px solid #e0e7ee;
+  border: 1px solid #dcf3dc;
   margin-bottom: 40px;
 `
 
@@ -130,7 +130,7 @@ const Title = styled.h1`
   font-size: 2.5rem;
   font-weight: 800;
   text-align: center;
-  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0 0 32px 0;
@@ -151,13 +151,13 @@ const Input = styled.input`
   padding: 18px 25px;
   font-size: 17px;
   border: none;
-  background-color: #f7f9fc;
+  background-color: #f5fbf5;
   border-radius: 15px 0 0 15px;
   outline: none;
   transition: all 0.3s ease;
   &:focus {
     background-color: #ffffff;
-    box-shadow: inset 0 0 0 2px #2575fc;
+    box-shadow: inset 0 0 0 2px #38a169;
   }
   &::placeholder { color: #9da8b7; }
 `
@@ -167,7 +167,7 @@ const Button = styled.button`
   font-size: 17px;
   font-weight: 700;
   color: white;
-  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
   border: none;
   border-radius: 0 15px 15px 0;
   cursor: pointer;
@@ -178,7 +178,7 @@ const Button = styled.button`
   &:hover {
     opacity: 0.95;
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(37, 117, 252, 0.3);
+    box-shadow: 0 6px 15px rgba(56, 161, 105, 0.3);
   }
   &:active { transform: translateY(0); box-shadow: none; }
   &:disabled {
@@ -228,13 +228,13 @@ const ErrorMessage = styled(ResultBox)`
 
 const HistoryWrapper = styled.div`
   width: 100%;
-  max-width: 600px; /* ⭐️ ขนาดเดียวกับ ShortenerWrapper */
-  background: #ffffff;
+  max-width: 600px;
+  background: #fafffa;
   padding: 30px 40px;
   border-radius: 20px;
   box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  border: 1px solid #e0e7ee;
+  border: 1px solid #dcf3dc;
   animation: ${fadeIn} 0.7s ease-out 0.2s;
   animation-fill-mode: backwards;
 `
@@ -263,7 +263,7 @@ const HistoryItem = styled.li`
   display: flex;
   flex-direction: column;
   padding: 15px 0;
-  border-bottom: 1px solid #e0e7ee;
+  border-bottom: 1px solid #dcf3dc;
   
   &:last-child {
     border-bottom: none;
@@ -280,7 +280,7 @@ const ShortLink = styled.div`
   margin-bottom: 5px;
 
   a {
-    color: #2575fc;
+    color: #38a169;
     text-decoration: none;
     &:hover {
       text-decoration: underline;
@@ -306,8 +306,8 @@ const CopyButton = styled.button`
   transition: background-color 0.2s ease, color 0.2s ease;
   
   &:hover {
-    background-color: #f0f4f8;
-    color: #2575fc;
+    background-color: #f0f8f0;
+    color: #38a169;
   }
 `
 
