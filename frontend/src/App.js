@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
-import { Global, keyframes } from "@emotion/react";
+import { Global, keyframes } from '@emotion/react'
 import { FaLink, FaSpinner, FaCheckCircle, FaExclamationCircle, FaCopy, FaHistory } from 'react-icons/fa'
 
 const API_URL = process.env.REACT_APP_BACKEND
@@ -317,6 +317,13 @@ const NoHistory = styled.div`
   padding: 20px 0;
 `
 
+const Notification = ({ message, type, show }) => (
+  <NotificationWrapper show={show} type={type}>
+    {type === 'success' ? <FaCheckCircle size={24} /> : <FaExclamationCircle size={24} />}
+    {message}
+  </NotificationWrapper>
+);
+
 const AppHeader = () => (
   <Header>
     <Logo>
@@ -344,31 +351,178 @@ const isValidUrl = (string) => {
   return !!pattern.test(string)
 }
 
+const getInitialHistory = () => {
+  try {
+    const storedHistory = localStorage.getItem('shortyHistory');
+    if (storedHistory) {
+      return JSON.parse(storedHistory);
+    }
+  } catch (err) {
+    console.error("Failed to load history from localStorage", err);
+  }
+  return []; 
+}
+
 function App() {
+  const [url, setUrl] = useState('');
+  const [shortUrl, setShortUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(''); 
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'error' })
+  
+  const [history, setHistory] = useState(getInitialHistory)
+  
+  useEffect(() => {
+    try {
+      const storedHistory = localStorage.getItem('shortyHistory')
+      if (storedHistory) {
+        setHistory(JSON.parse(storedHistory))
+      }
+    } catch (err) {
+      console.error("Failed to load history from localStorage", err)
+    }
+  }, [])
+  
+  useEffect(() => {
+    try {
+      localStorage.setItem('shortyHistory', JSON.stringify(history))
+    } catch (err) {
+      console.error("Failed to save history to localStorage", err)
+    }
+  }, [history])
+
+  useEffect(() => {
+    if (notification.show) {
+      const timer = setTimeout(() => {
+        setNotification(prev => ({ ...prev, show: false }))
+      }, 3000); 
+      return () => clearTimeout(timer)
+    }
+  }, [notification.show])
+  
+  const triggerNotification = (message, type) => {
+    setNotification({ message, type, show: true })
+  }
+  
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text)
+    triggerNotification('Copied to clipboard!', 'success')
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    if (!url || !isValidUrl(url)) {
+      triggerNotification('Please enter a valid URL (e.g., https://...)', 'error')
+      setError('Please enter a valid URL') 
+      setShortUrl('')
+      return 
+    }
+    
+    setLoading(true)
+    setError('')
+    setShortUrl('') 
+
+    await new Promise(resolve => setTimeout(resolve, 800)) 
+
+    try {
+      let processedUrl = url
+      if (!/^https?:\/\//i.test(url)) {
+        processedUrl = 'https://' + url
+      }
+
+      const response = await fetch(`${API_URL}/api/shorten`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ longUrl: processedUrl }), 
+      })
+      
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error || 'Failed to shorten URL')
+      }
+      
+      const data = await response.json()
+      setShortUrl(data.shortUrl)
+      setUrl('')
+      triggerNotification('URL shortened successfully!', 'success')
+      
+      const alreadyExists = history.some(item => item.longUrl === processedUrl)
+
+      if (!alreadyExists) {
+        const newHistoryItem = {
+            shortUrl: data.shortUrl,
+            longUrl: processedUrl,
+            id: new Date().getTime(),
+          }
+    
+          setHistory(prevHistory => [newHistoryItem, ...prevHistory].slice(0, 10))
+      }
+      
+    } catch (err) {
+      triggerNotification(`Error: ${err.message}`, 'error')
+      setError(err.message)
+      setShortUrl('')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <AppLayout>
-      <AppHeader />
-      <MainContent>
-        <ShortenerWrapper>
-          <Title>
+    <> 
+      <GlobalStyles />
+      <Notification 
+        message={notification.message} 
+        type={notification.type} 
+        show={notification.show} 
+      />
+      
+      <AppLayout>
+        <AppHeader />
+        
+        <MainContent>
+          <ShortenerWrapper>
+            <Title>
               <FaLink style={{ verticalAlign: 'middle', marginRight: '10px' }} />
               URL Shortener
             </Title>
-
-            <Form>
+            
+            <Form onSubmit={handleSubmit}>
               <Input
                 type="text"
                 placeholder="Paste your long URL here (e.g., https://...)"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                disabled={loading}
               />
-              <Button type="submit">
-                {'Shorten'}
+              <Button type="submit" disabled={loading}>
+                {loading ? <><LoadingSpinner /> Shortening...</> : 'Shorten'}
               </Button>
             </Form>
 
-        </ShortenerWrapper>
-      </MainContent>
-      <AppFooter />
-    </AppLayout>
+            {shortUrl && !loading && !error && (
+              <ResultBox show={!!shortUrl}>
+                <FaCheckCircle style={{ color: '#28a745', fontSize: '20px' }} />
+                Your short link: <a href={shortUrl} target="_blank" rel="noopener noreferrer">{shortUrl}</a>
+                <CopyButton onClick={() => handleCopy(shortUrl)} style={{ marginLeft: 'auto' }}>
+                  <FaCopy size={18} />
+                </CopyButton>
+              </ResultBox>
+            )}
+            
+            {error && (
+              <ErrorMessage show={!!error}>
+                <FaExclamationCircle style={{ color: '#dc3545', fontSize: '20px' }} />
+                {error}
+              </ErrorMessage>
+            )}
+          </ShortenerWrapper>
+
+        </MainContent>
+
+        <AppFooter />
+      </AppLayout>
+    </>
   )
 }
 
