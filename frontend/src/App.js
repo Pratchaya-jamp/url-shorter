@@ -517,6 +517,35 @@ function App() {
               </ErrorMessage>
             )}
           </ShortenerWrapper>
+          
+          {history.length > 0 && (
+            <HistoryWrapper>
+              <HistoryTitle>
+                <FaHistory /> Your Recent Links
+              </HistoryTitle>
+              <HistoryList>
+                {history.map(item => (
+                  <HistoryItem key={item.id}>
+                    <ShortLink>
+                      <a href={item.shortUrl} target="_blank" rel="noopener noreferrer">
+                        {item.shortUrl.replace(/^https?:\/\//, '')}
+                      </a>
+                      <CopyButton onClick={() => handleCopy(item.shortUrl)}>
+                        <FaCopy size={16} />
+                      </CopyButton>
+                    </ShortLink>
+                    <OriginalLink>
+                      {item.longUrl}
+                    </OriginalLink>
+                  </HistoryItem>
+                ))}
+              </HistoryList>
+            </HistoryWrapper>
+          )}
+          
+          {history.length === 0 && (
+            <NoHistory>Your history will appear here.</NoHistory>
+          )}
 
         </MainContent>
 
