@@ -1,0 +1,25 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./frontend/nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      - shorten-net
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/dockerfile
+    ports:
+      - "3001:3001"
+    networks:
+      - shorten-net
+
+networks:
+  shorten-net:
+    driver: bridge
