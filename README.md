@@ -3,6 +3,7 @@
 This is a URL shortener web application built as a project assignment. It is built with React, a pure Node.js (no-framework) backend, and Google Firestore, all containerized with Docker.
 
 **Live Demo:** [https://shortyurl.ddns.net](https://shortyurl.ddns.net)
+![alt text](web.png)
 
 ---
 
@@ -19,16 +20,16 @@ This is a URL shortener web application built as a project assignment. It is bui
 ## 🛠️ Tech Stack
 
 * **Frontend:**
-    * [React](https://reactjs.org/)
-    * [Emotion](https://emotion.sh/docs/styled) (for CSS-in-JS, as per assignment requirements)
+    * [![React][React.js]][React-url]
+    * [![Emotion][Emotion.sh]][Emotion-url] (for CSS-in-JS, as per assignment requirements)
 * **Backend:**
-    * [Node.js](https://nodejs.org/) (Using the native `http` module, no external frameworks like Express)
+    * [![Node.js][Node.js]][Node-url] (Using the native `http` module, no external frameworks like Express)
 * **Database:**
-    * [Google Firestore](https://firebase.google.com/products/firestore) (Used to store `shortCode` and `longUrl` pairs)
+    * [![Firebase][Firebase]][Firebase-url] (Used to store `shortCode` and `longUrl` pairs)
 * **Deployment:**
-    * [Nginx](https://www.nginx.com/) (Acts as the reverse proxy, handles SSL termination, and serves the React app)
-    * [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
-    * [Let's Encrypt](https://letsencrypt.org/) (For SSL Certificates)
+    * [![Nginx][Nginx]][Nginx-url] (Acts as the reverse proxy, handles SSL termination, and serves the React app)
+    * [![Docker][Docker]][Docker-url]
+    * [![Let's Encrypt][LetsEncrypt]][LetsEncrypt-url] (For SSL Certificates)
 
 ---
 
@@ -50,3 +51,21 @@ This project uses a 2-Container architecture:
 
 * **`GET /{shortCode}`** (e.g., `/abcdefg`)
     * Performs a 301 Redirect to the stored `longUrl`.
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[Emotion.sh]: https://img.shields.io/badge/Emotion-D269A8?style=for-the-badge&logo=emotion&logoColor=white
+[Node.js]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white
+[Firebase]: https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black
+[Nginx]: https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white
+[Docker]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
+[LetsEncrypt]: https://img.shields.io/badge/Let's_Encrypt-003A70?style=for-the-badge&logo=letsencrypt&logoColor=white
+
+[React-url]: https://reactjs.org/
+[Emotion-url]: https://emotion.sh/
+[Node-url]: https://nodejs.org/
+[Firebase-url]: https://firebase.google.com/
+[Nginx-url]: https://www.nginx.com/
+[Docker-url]: https://www.docker.com/
+[LetsEncrypt-url]: https://letsencrypt.org/
